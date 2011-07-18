@@ -120,6 +120,21 @@ body {
 
 {% endhighlight %}
 
+## Advantages
+
++ Previously using JavaScript/jQuery for animation
++ 
++ Not only are transitions easily to implement
++ 
+
+
+
+## Thinking big - Isotope
+
++ [isotope.metafizzy.co](http://isotope.metafizzy.co)
++ Isotope is a jQuery plugin for filtering, sorting, and rearranging items
+
+
 
 ## Fallback progression
 
@@ -159,12 +174,66 @@ body {
 
 {% endhighlight %}
 
-
 ### Animation
 
 1. **CSS Transitions** - Firefox 4.0+, Safari, Chrome, Opera 11+
 2. **jQuery animation** (or whatever JS library you prefer) - Firefox 3.6-, IE9
 3. **No animation** - IE6, IE7
+
+### Demo
+
+[jsfiddle.net/desandro/xTqm7/2/](http://jsfiddle.net/desandro/xTqm7/2/)
+
+Use [Modernizr to detect support for transitions, transforms, and 3D transforms](http://www.modernizr.com/download/#-csstransforms-csstransforms3d-csstransitions-cssclasses-prefixed-teststyles-testprop-testallprops-prefixes-domprefixes)
+
+{% highlight javascript %}
+
+$(function() {
+
+      // i.e. WebkitTransform or MozTransform
+  var transformProperty = Modernizr.prefixed('transform'),
+      getPosition;
+  
+  if ( Modernizr.csstransforms3d ) {
+    // returns i.e. { WebkitTransform: translate3d( 10px, 20px, 0 ) }
+    getPosition = function( x, y ) {
+      var style = {};
+      style[ transformProperty ] = 'translate3d(' + x + 'px, ' + y + 'px, 0)';
+      return style;
+    }
+  }
+  else if ( Modernizr.csstransforms ) {
+    // returns i.e. { WebkitTransform: translate( 10px, 20px ) }
+    getPosition = function( x, y ) {
+      var style = {};
+      style[ transformProperty ] = 'translate(' + x + 'px, ' + y + 'px)';
+      return style;
+    }
+  }
+  else {
+    // returns i.e. { left: 10, top: 20 }
+    getPosition = function( x, y ) {
+      var style = {
+        left: x,
+        top: y
+      };
+      return style;
+    }
+  }
+
+  var $dot = $('#dot'),
+      // use jQuery animation only if no transitions or transforms
+      applyStyle = Modernizr.csstransitions && Modernizr.csstransforms  ? 'css' : 'animate';
+
+  $(document).click( function(event) {
+    var position = getPosition( event.pageX-15, event.pageY-15 );
+    $dot[ applyStyle ]( position );
+  });
+
+});
+
+{% endhighlight %}
+
 
 ## Pitfalls and issues
 
