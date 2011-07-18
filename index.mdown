@@ -33,6 +33,162 @@ layout: presentation
 + By [Frank Chimero](http://frankchimero.com)
 + Flip it
 + Entertain. Win audience over. Then persuade
++ [nikebetterworld.com](http://nikebetterworld.com/) by Ian Coyle and Duane King
 + Delight comes from interaction
 + Reward participation
 + Interaction is the front-end developer's wheelhouse
+
+## CSS3
+
++ Conventionally used like a polish
++ Progressive enhancement
+
+## Presentation items
+
+This presentation site uses transforms and transitions to reveal next item
+
+Use JS to toggle on and off `.hidden`
+
+{% highlight css %}
+
+.preso-item {
+  -webkit-transition: -webkit-transform 0.4s, opacity 0.4s;
+     -moz-transition:    -moz-transform 0.4s, opacity 0.4s;
+       -o-transition:      -o-transform 0.4s, opacity 0.4s;
+          transition:         transform 0.4s, opacity 0.4s;
+  -webkit-transform-origin: left top;
+     -moz-transform-origin: left top;
+       -o-transform-origin: left top;
+          transform-origin: left top;
+}
+
+.preso-item.hidden {
+  opacity: 0;
+  pointer-events: none;
+  -webkit-transform: scale(2);
+     -moz-transform: scale(2);
+       -o-transform: scale(2);
+          transform: scale(2);
+}
+
+{% endhighlight %}
+
+(See [dropshado.ws: CSS formatting](http://dropshado.ws/post/2054719546/css-formatting) for more details on code styles)
+
+## Transitioning background color
+
+Use JS to change class on `body` every 5 seconds: `color0`, `color1`, `color2`...
+
+{% highlight javascript %}
+
+var colorT = 0;
+
+changeColor = function() {
+  document.body.className = 'color' + colorT % 18;
+  colorT++;
+  setTimeout( changeColor, 5000 )
+}
+
+changeColor();
+
+{% endhighlight %}
+
+Add background color CSS
+
+{% highlight css %}
+
+body.color0  { background-color: hsl(    0, 40%, 35% ); }
+body.color1  { background-color: hsl(  100, 40%, 35% ); }
+body.color2  { background-color: hsl(  200, 40%, 35% ); }
+body.color3  { background-color: hsl(  300, 40%, 35% ); }
+body.color4  { background-color: hsl(  400, 40%, 35% ); }
+body.color5  { background-color: hsl(  500, 40%, 35% ); }
+...
+
+{% endhighlight %}
+
+Linear transition gives the appearance that color is smoothly changing
+
+{% highlight css %}
+
+body {
+  -webkit-transition: background-color 5s linear;
+     -moz-transition: background-color 5s linear;
+       -o-transition: background-color 5s linear;
+          transition: background-color 5s linear;
+}
+
+{% endhighlight %}
+
+
+## Fallback progression
+
+### Layout effects
+
+**Hardware accelerated CSS transforms** - Safari, Chrome 12+
+
+{% highlight css %}
+
+.hide {
+  transform: translate3d( 10px, 20px, 0 ) scale3d( 0.01, 0.01, 0);
+  opacity: 0;
+}
+
+{% endhighlight %}
+
+**CSS transforms** - Firefox 3.6+, Opera 10+, IE9?
+
+{% highlight css %}
+
+.hide {
+  transform: translate( 10px, 20px ) scale( 0.01 );
+  opacity: 0;
+}
+
+{% endhighlight %}
+
+**Absolute positioning** - All lesser browsers
+
+{% highlight css %}
+
+.hide {
+  left: 10px;
+  top: 20px;
+  opacity: 1;
+}
+
+{% endhighlight %}
+
+
+### Animation
+
+1. **CSS Transitions** - Firefox 4.0+, Safari, Chrome, Opera 11+
+2. **jQuery animation** (or whatever JS library you prefer) - Firefox 3.6-, IE9
+3. **No animation** - IE6, IE7
+
+## Pitfalls and issues
+
+### Poor font rendering with hardware acceleration
+
+Hardware acceleration in WebKit messes with font anti-aliasing. See [dropshado.ws: Resolving anti-aliasing on WebKit hardware-accelerated elements](http://dropshado.ws/post/6142339613/resolving-anti-aliasing-on-webkit-hardware-accelerated)
+
+Hardware accelerated, no background:
+
+![with opaque background](http://i.imgur.com/eVlrJ.png)
+
+Adding a background:
+
+![with opaque background](http://i.imgur.com/WrJfz.png)
+
+### CSS transforms break Flash content
+
+Safari and Firefox don't properly render Flash content inside elements with CSS transforms. See [dropshado.ws: CSS transforms breaking flash](http://dropshado.ws/post/4085720152/css-transforms-breaking-flash)
+
+### Avoid Rube Goldberg contraptions
+
++ Sometimes using a simpler solution is well worth the time you can save.
++ See [mcgilldesandro.com](http://mcgilldesandro.com/) (my wedding site)
++ Radial type treatment could have easily been done in an image
++ Would have saved me hours
+
+

@@ -12,7 +12,7 @@
   
     body {
       font-family: 'Runda', "runda-1","runda-2", 'Helvetica Neue', Arial, sans-serif;
-      font-size: 18px;
+      font-size: 16px;
       line-height: 1.5em;
       background: hsl( 60, 40%, 35% );
       color: white;
@@ -67,14 +67,22 @@
       padding: 0 20px;
     }
     
-    body > ul {
+    body > ul,
+    body > ol {
       margin-left: 1.5em;
     }
     
   
     h2 {
-      padding-top: 0.5em;
-      border-top: 1px solid hsla( 0, 0%, 0%, 0.3 );
+      margin-top: 2.0em;
+      padding-top: 0.6em;
+      border-top: 6px solid hsla( 0, 0%, 0%, 0.1 );
+    }
+    
+    h3 {
+      margin-top: 0.4em;
+      padding-top: 0.4em;
+      border-top: 1px solid hsla( 0, 0%, 0%, 0.15 );
     }
     
     
@@ -97,6 +105,47 @@
            -o-transform: translateY(40px) scaleY(2);
               transform: translateY(40px) scaleY(2);
     }
+    
+    .preso-item.current,
+    .preso-item.current a {
+      color: #FF6;
+    }
+    
+    /**** Pygments ****/
+ 
+    pre, code {
+      background: black;
+      color: white;
+      font-family: Monaco, monospace;
+      font-size: 95%;
+    }
+    
+    pre {
+      padding: 0.5em;
+      white-space: pre-wrap;
+    }
+ 
+    code .s1,
+    code .s { color: #78BD55; } /* string */
+    code .mi, /* integer */
+    code .cp, /* doctype */
+    code .kc { color: #5298D4; } /*boolean*/
+    code .k { color: #E39B79; } /* keyword */
+    code .kd, /* storage */
+    code .na { color: #A9D866; } /* markup attribute */
+    code .p  { color: #EDB; } /* punctuation */
+    code .o  { color: #F63; }   /* operator */
+    code .nb { color: #AA97AC;} /* support */
+ 
+    code .c, /* comment */
+    code .c1 { color: #666; font-style: italic; }
+ 
+    code .nt { color: #A0C8FC; } /* Markup open tag */
+ 
+    code .nf { color: #9EA8B8; } /* css id */
+    code .nc { color: #A78352; }  /* CSS class */
+    code .m  { color: #DE8E50; } /* CSS value */
+    code .nd { color: #9FAD7E; } /* CSS pseudo selector */
   </style>
 
 </head>
@@ -163,8 +212,8 @@
       colorT = ~~(Math.random()*18),
       docBody = document.body,
       presoItems, 
-      currentItem = -1,
-      previousItem;
+      itemIndex = -1,
+      previousItemIndex;
   
   changeColor = function() {
     document.body.className = 'color' + colorT % 18;
@@ -173,14 +222,29 @@
   }
 
   
-  function switchCurrentItem( delta ) {
-    currentItem += delta;
-    currentItem = Math.max( -1, Math.min( presoItems.length - 1, currentItem ) );
-    if ( currentItem !== previousItem ) {
-      var item = delta === 1 ? currentItem : previousItem;
-      presoItems[ item ].toggleClassName('hidden');
-      previousItem = currentItem;
+  function switchitemIndex( delta ) {
+    itemIndex += delta;
+    itemIndex = Math.max( -1, Math.min( presoItems.length - 1, itemIndex ) );
+    // don't proceed if not a new index
+    if ( itemIndex === previousItemIndex ) {
+      return;
     }
+    
+    var currentItem = presoItems[ itemIndex ],
+        previousItem = presoItems[ previousItemIndex ];
+    
+    if ( delta === 1 ) {
+      // next
+      previousItem && previousItem.removeClassName('current');
+      currentItem.removeClassName('hidden');
+    } else {
+      // previous
+      previousItem && previousItem.addClassName('hidden');
+    }
+    
+    currentItem && currentItem.addClassName('current');
+    
+    previousItemIndex = itemIndex;
   }
   
   function handleKeyup( event ) {
@@ -188,10 +252,10 @@
     
     if ( event.keyCode === 37 ) {
       // left / previous
-      switchCurrentItem( -1 );
+      switchitemIndex( -1 );
     } else if ( event.keyCode === 39 ) {
       // right / next
-      switchCurrentItem( +1 );
+      switchitemIndex( +1 );
       
     }
     
@@ -202,14 +266,14 @@
   
   function init() {
     
-    presoItems = document.querySelectorAll('h2, li');
+    presoItems = document.querySelectorAll('h2, h3, li, body > p, pre');
     
-    // for (var i=0, len = presoItems.length; i < len; i++) {
-    //   var item = presoItems[i];
-    //   item.className = 'preso-item hidden';
-    // }
-    // 
-    // document.addEventListener( 'keyup', handleKeyup, false );
+    for (var i=0, len = presoItems.length; i < len; i++) {
+      var item = presoItems[i];
+      presoItems[i].className = 'preso-item hidden';
+    }
+    
+    document.addEventListener( 'keyup', handleKeyup, false );
     
     if ( isTransitionsSupported ) {
       changeColor();
