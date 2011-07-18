@@ -1,0 +1,38 @@
+---
+
+layout: presentation
+
+---
+
+
+# {{ site.name }}
+
+<!-- * (Table of contents)
+{:toc} -->
+
+## David DeSandro
+
++ Web developer
++ Creative programming
++ Work at [nclud.com](http://nclud.com) in Washington DC
++ Run side business [Metafizzy](http://metafizzy.co)
+  - [jQuery Masonry](http://masonry.desandro.com) - The flip side of CSS floats
+  - [Isotope](http://isotope.metafizzy.co) - Filtering, sorting, dynamic layouts
++ I enjoy making [lots of fun stuff](http://github.com/desandro). For example... 
+
+## [Undulate demo](http://desandro.com/articles/undulate/)
+
++ Basic particle demo, HTML5ish
++ Functionally useless
++ [Pretty darn popular](https://twitter.com/#!/desandro/status/76691983502028800)
++ Why do people enjoy it?
+
+## Delight
+
++ ![Design Nobility Pyramid](http://i.imgur.com/pMseY.jpg)
++ By [Frank Chimero](http://frankchimero.com)
++ Flip it
++ Entertain. Win audience over. Then persuade
++ Delight comes from interaction
++ Reward participation
++ Interaction is the front-end developer's wheelhouse

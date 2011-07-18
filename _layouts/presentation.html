@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>presentation</title>
+
+  <script src="http://use.typekit.com/ajk0pjo.js"></script> 
+  <script>try{Typekit.load();}catch(e){}</script>
+
+  <style media="screen">
+    
+  
+    body {
+      font-family: 'Runda', "runda-1","runda-2", 'Helvetica Neue', Arial, sans-serif;
+      font-size: 18px;
+      line-height: 1.5em;
+      background: hsl( 60, 40%, 35% );
+      color: white;
+      padding: 0;
+      margin: 0;
+      overflow-x: hidden;
+      -webkit-transition: background-color 5s linear;
+         -moz-transition: background-color 5s linear;
+           -o-transition: background-color 5s linear;
+              transition: background-color 5s linear;
+    }
+    
+    
+    h1, h2, h3 {
+      font-weight: 300;
+    }
+    
+    
+    body.color0  { background-color: hsl(    0, 40%, 35% ); }
+    body.color1  { background-color: hsl(  100, 40%, 35% ); }
+    body.color2  { background-color: hsl(  200, 40%, 35% ); }
+    body.color3  { background-color: hsl(  300, 40%, 35% ); }
+    body.color4  { background-color: hsl(  400, 40%, 35% ); }
+    body.color5  { background-color: hsl(  500, 40%, 35% ); }
+    body.color6  { background-color: hsl(  600, 40%, 35% ); }
+    body.color7  { background-color: hsl(  700, 40%, 35% ); }
+    body.color8  { background-color: hsl(  800, 40%, 35% ); }
+    body.color9  { background-color: hsl(  900, 40%, 35% ); }
+    body.color10 { background-color: hsl( 1000, 40%, 35% ); }
+    body.color11 { background-color: hsl( 1100, 40%, 35% ); }
+    body.color12 { background-color: hsl( 1200, 40%, 35% ); }
+    body.color13 { background-color: hsl( 1300, 40%, 35% ); }
+    body.color14 { background-color: hsl( 1400, 40%, 35% ); }
+    body.color15 { background-color: hsl( 1500, 40%, 35% ); }
+    body.color16 { background-color: hsl( 1600, 40%, 35% ); }
+    body.color17 { background-color: hsl( 1700, 40%, 35% ); }
+    
+    a {
+      color: white;
+      text-decoration: none;
+      border-bottom: 0.1em solid;
+      
+    }
+    
+    a:hover {
+      background: white;
+      color: black;
+      border-color: white;
+    }
+    
+    body > * {
+      padding: 0 20px;
+    }
+    
+    body > ul {
+      margin-left: 1.5em;
+    }
+    
+  
+    h2 {
+      padding-top: 0.5em;
+      border-top: 1px solid hsla( 0, 0%, 0%, 0.3 );
+    }
+    
+    
+    .preso-item {
+      -webkit-transition: -webkit-transform 0.4s, opacity 0.4s;
+         -moz-transition:    -moz-transform 0.4s, opacity 0.4s;
+           -o-transition:      -o-transform 0.4s, opacity 0.4s;
+              transition:         transform 0.4s, opacity 0.4s;
+      -webkit-transform-origin: left top;
+         -moz-transform-origin: left top;
+           -o-transform-origin: left top;
+              transform-origin: left top;
+    }
+    
+    .preso-item.hidden {
+      opacity: 0;
+      pointer-events: none;
+      -webkit-transform: scale(2);
+         -moz-transform: translateY(40px) scaleY(2);
+           -o-transform: translateY(40px) scaleY(2);
+              transform: translateY(40px) scaleY(2);
+    }
+  </style>
+
+</head>
+<body>
+
+  {{ content }}
+
+<script>
+(function(){
+  // ======================= DOM Utility Functions from PastryKit =============================== //
+
+  // Sure, we could use jQuery or XUI for these, 
+  // but these are concise and will work with plain vanilla JS
+
+  Element.prototype.hasClassName = function(a) {
+    return new RegExp("(?:^|\\s+)" + a + "(?:\\s+|$)").test(this.className);
+  };
+
+  Element.prototype.addClassName = function(a) {
+    if (!this.hasClassName(a)) {
+      this.className = [this.className, a].join(" ");
+    }
+  };
+
+  Element.prototype.removeClassName = function(b) {
+    if (this.hasClassName(b)) {
+      var a = this.className;
+      this.className = a.replace(new RegExp("(?:^|\\s+)" + b + "(?:\\s+|$)", "g"), " ");
+    }
+  };
+
+  Element.prototype.toggleClassName = function(a) {
+    this[this.hasClassName(a) ? "removeClassName": "addClassName"](a);
+  };
+  
+  // ========================= getStyleProperty by kangax ===============================
+  // http://perfectionkills.com/feature-testing-css-properties/
+  var prefixes = 'Moz Webkit Khtml O Ms'.split(' ');
+
+  function getStyleProperty( propName ) {
+    var style = document.documentElement.style,
+        prefixed;
+
+    // test standard property first
+    if ( typeof style[propName] === 'string' ) {
+      return propName;
+    }
+
+    // capitalize
+    propName = propName.charAt(0).toUpperCase() + propName.slice(1);
+
+    // test vendor specific properties
+    for ( var i=0, len = prefixes.length; i < len; i++ ) {
+      prefixed = prefixes[i] + propName;
+      if ( typeof style[ prefixed ] === 'string' ) {
+        return prefixed;
+      }
+    }
+  }
+  
+  // ========================= config ===============================
+  
+  var isTransitionsSupported = !!getStyleProperty('transition'),
+      colorT = ~~(Math.random()*18),
+      docBody = document.body,
+      presoItems, 
+      currentItem = -1,
+      previousItem;
+  
+  changeColor = function() {
+    document.body.className = 'color' + colorT % 18;
+    colorT++;
+    setTimeout( changeColor, 5000 )
+  }
+
+  
+  function switchCurrentItem( delta ) {
+    currentItem += delta;
+    currentItem = Math.max( -1, Math.min( presoItems.length - 1, currentItem ) );
+    if ( currentItem !== previousItem ) {
+      var item = delta === 1 ? currentItem : previousItem;
+      presoItems[ item ].toggleClassName('hidden');
+      previousItem = currentItem;
+    }
+  }
+  
+  function handleKeyup( event ) {
+    // console.log( event.keyCode, presoItems.length );
+    
+    if ( event.keyCode === 37 ) {
+      // left / previous
+      switchCurrentItem( -1 );
+    } else if ( event.keyCode === 39 ) {
+      // right / next
+      switchCurrentItem( +1 );
+      
+    }
+    
+  }
+  
+  
+  // ========================= init ===============================
+  
+  function init() {
+    
+    presoItems = document.querySelectorAll('h2, li');
+    
+    // for (var i=0, len = presoItems.length; i < len; i++) {
+    //   var item = presoItems[i];
+    //   item.className = 'preso-item hidden';
+    // }
+    // 
+    // document.addEventListener( 'keyup', handleKeyup, false );
+    
+    if ( isTransitionsSupported ) {
+      changeColor();
+    }
+    
+  }
+  
+  window.addEventListener( 'load', init, false);
+  
+})();
+
+
+  
+  
+</script>
+
+</body>
+</html>
