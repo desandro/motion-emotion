@@ -93,7 +93,8 @@
       margin: 0 40px;
     }
     
-    .preso-item {
+    .preso-item,
+    .directions {
       -webkit-transition: -webkit-transform 0.4s, opacity 0.4s;
          -moz-transition:    -moz-transform 0.4s, opacity 0.4s;
            -o-transition:      -o-transform 0.4s, opacity 0.4s;
@@ -104,7 +105,8 @@
               transform-origin: left top;
     }
     
-    .preso-enabled .preso-item.hidden {
+    .preso-enabled .preso-item.hidden,
+    html:not(.preso-enabled) .directions {
       opacity: 0;
       pointer-events: none;
       -webkit-transform: scale(2);
@@ -166,8 +168,9 @@
 
   <div>
     <h1>{{ site.name }}</h1>
-    <div class="follow">Follow along at <a href="http://bit.ly/motion-preso">bit.ly/motion-preso</a></div>
+    <p class="follow">Follow along at <a href="http://bit.ly/motion-preso">bit.ly/motion-preso</a></p>
     <p><button id="toggle-presentation">Toggle presentation</button></p>
+    <p class="directions">Use &larr; &rarr; keys to advance</p>
   </div>
 
   {{ content }}
@@ -241,7 +244,7 @@
   }
 
   
-  function switchitemIndex( delta ) {
+  function switchItemIndex( delta ) {
     itemIndex += delta;
     itemIndex = Math.max( -1, Math.min( presoItems.length - 1, itemIndex ) );
     // don't proceed if not a new index
@@ -254,31 +257,27 @@
     
     if ( delta === 1 ) {
       // next
-      previousItem && previousItem.removeClassName('current');
       currentItem.removeClassName('hidden');
     } else {
       // previous
       previousItem && previousItem.addClassName('hidden');
     }
     
+    previousItem && previousItem.removeClassName('current');
     currentItem && currentItem.addClassName('current');
     
     previousItemIndex = itemIndex;
   }
   
   function handleKeyup( event ) {
-    
     if ( event.keyCode === 37 ) {
       // left / previous
-      switchitemIndex( -1 );
+      switchItemIndex( -1 );
     } else if ( event.keyCode === 39 ) {
       // right / next
-      switchitemIndex( +1 );
-      
+      switchItemIndex( +1 );
     }
-    
   }
-  
   
   // ========================= init ===============================
   
