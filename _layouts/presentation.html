@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>presentation</title>
+  <title>{{ site.name }}</title>
 
   <script src="http://use.typekit.com/ajk0pjo.js"></script> 
   <script>try{Typekit.load();}catch(e){}</script>
@@ -85,6 +85,12 @@
       border-top: 1px solid hsla( 0, 0%, 0%, 0.15 );
     }
     
+    
+    blockquote {
+      background: hsla( 0, 0%, 100%, 0.1 );
+      padding: 0.5em;
+      margin: 0 40px;
+    }
     
     .preso-item {
       -webkit-transition: -webkit-transform 0.4s, opacity 0.4s;
@@ -266,14 +272,14 @@
   
   function init() {
     
-    presoItems = document.querySelectorAll('h2, h3, li, body > p, pre');
+    presoItems = document.querySelectorAll('h2, h3, li, body > p, pre, blockquote');
     
-    // for (var i=0, len = presoItems.length; i < len; i++) {
-    //   var item = presoItems[i];
-    //   presoItems[i].className = 'preso-item hidden';
-    // }
-    // 
-    // document.addEventListener( 'keyup', handleKeyup, false );
+    for (var i=0, len = presoItems.length; i < len; i++) {
+      var item = presoItems[i];
+      presoItems[i].className = 'preso-item hidden';
+    }
+    
+    document.addEventListener( 'keyup', handleKeyup, false );
     
     if ( isTransitionsSupported ) {
       changeColor();

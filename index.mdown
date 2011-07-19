@@ -15,7 +15,7 @@ layout: presentation
 + Web developer
 + Creative programming
 + Work at [nclud.com](http://nclud.com) in Washington DC
-+ Run side business [Metafizzy](http://metafizzy.co)
++ Side business [Metafizzy](http://metafizzy.co)
   - [jQuery Masonry](http://masonry.desandro.com) - The flip side of CSS floats
   - [Isotope](http://isotope.metafizzy.co) - Filtering, sorting, dynamic layouts
 + I enjoy making [lots of fun stuff](http://github.com/desandro). For example... 
@@ -27,7 +27,7 @@ layout: presentation
 + [Pretty darn popular](https://twitter.com/#!/desandro/status/76691983502028800)
 + Why do people enjoy it?
 
-## Delight
+## All about delight
 
 + ![Design Nobility Pyramid](http://i.imgur.com/pMseY.jpg)
 + By [Frank Chimero](http://frankchimero.com)
@@ -35,10 +35,10 @@ layout: presentation
 + Entertain. Win audience over. Then persuade
 + [nikebetterworld.com](http://nikebetterworld.com/) by Ian Coyle and Duane King
 + Delight comes from interaction
-+ Reward participation
 + Interaction is the front-end developer's wheelhouse
++ Reward participation
 
-## CSS3
+## CSS3 transforms and transitions
 
 + Conventionally used like a polish
 + Progressive enhancement
@@ -102,7 +102,6 @@ body.color1  { background-color: hsl(  100, 40%, 35% ); }
 body.color2  { background-color: hsl(  200, 40%, 35% ); }
 body.color3  { background-color: hsl(  300, 40%, 35% ); }
 body.color4  { background-color: hsl(  400, 40%, 35% ); }
-body.color5  { background-color: hsl(  500, 40%, 35% ); }
 ...
 
 {% endhighlight %}
@@ -120,27 +119,34 @@ body {
 
 {% endhighlight %}
 
+See this effect in action on [metafizzy.co](http://metafizzy.co)
+
 ## Advantages
 
-+ Previously using JavaScript/jQuery for animation
-+ 
-+ Not only are transitions easily to implement
-+ 
++ Work best when used together
++ Better performance
++ No relying on JS library for animation
 
+## WebKit hardware acceleration
 
++ Using 3D transform function notation (`translate3d()`, `scale3d()`, or `rotate3d()`) triggers hardware acceleration
++ Get awesome performance in Safari, Chrome 12+, iOS devices
 
 ## Thinking big - Isotope
 
 + [isotope.metafizzy.co](http://isotope.metafizzy.co)
-+ Isotope is a jQuery plugin for filtering, sorting, and rearranging items
-
-
++ jQuery plugin for filtering, sorting, and rearranging items
++ Targeting the best performance possible for the best browsers
++ Then work backwards to support the worst
 
 ## Fallback progression
 
 ### Layout effects
 
-**Hardware accelerated CSS transforms** - Safari, Chrome 12+
+**Hardware accelerated CSS transforms**
+
++ Safari, Chrome 12+
++ uses 3D transform function notations
 
 {% highlight css %}
 
@@ -151,7 +157,10 @@ body {
 
 {% endhighlight %}
 
-**CSS transforms** - Firefox 3.6+, Opera 10+, IE9?
+**CSS transforms**
+
++ Firefox 3.6+, Opera 10+, IE9?
++ uses 2D transform function notations
 
 {% highlight css %}
 
@@ -162,7 +171,11 @@ body {
 
 {% endhighlight %}
 
-**Absolute positioning** - All lesser browsers
+**Absolute positioning**
+
++ All lesser browsers
++ use top/left for positioning
++ No scale transform, opacity will do
 
 {% highlight css %}
 
@@ -182,9 +195,9 @@ body {
 
 ### Demo
 
-[jsfiddle.net/desandro/xTqm7/2/](http://jsfiddle.net/desandro/xTqm7/2/)
-
-Use [Modernizr to detect support for transitions, transforms, and 3D transforms](http://www.modernizr.com/download/#-csstransforms-csstransforms3d-csstransitions-cssclasses-prefixed-teststyles-testprop-testallprops-prefixes-domprefixes)
++ [jsfiddle.net/desandro/xTqm7/2/](http://jsfiddle.net/desandro/xTqm7/2/)
++ View in advanced browser Safari and in lesser browser like Chrome
++ Use [Modernizr to detect support for transitions, transforms, and 3D transforms](http://www.modernizr.com/download/#-csstransforms-csstransforms3d-csstransitions-cssclasses-prefixed-teststyles-testprop-testallprops-prefixes-domprefixes)
 
 {% highlight javascript %}
 
@@ -234,10 +247,95 @@ $(function() {
 
 {% endhighlight %}
 
+## Value of animation
+
+> If you didn’t have the animation it would not be easy to see which items had risen and which fallen. You would have to compare your memory of the order before the change with what you’re looking at. This is cognitively very difficult.
+
+JonnieCache [on Hacker News, in response to Isotope](http://news.ycombinator.com/item?id=2191281)
+
+## More than just icing
+
++ Transitions and transforms can be the fundamental ingredients to a whole new cake
++ [2011.beercamp.com](http://2011.beercamp.com)
++ Fun opportunity to try something new with few risks
+
+## How it was done
+
++ Apply transform to container based on scroll
++ Use just one transform, helps performance
++ Simplified demo: [jsfiddle.net/desandro/daZmA/1/](http://jsfiddle.net/desandro/daZmA/1/)
+
+{% highlight javascript %}
+
+window.addEventListener( 'load', function() {
+  var box = document.getElementById('box'),
+      docHeight = document.documentElement.offsetHeight;
+  
+  window.addEventListener( 'scroll', function() {
+        // normalize scroll position as percentage
+    var scrolled = window.scrollY / ( docHeight - window.innerHeight ),
+        transformValue = 'scale(' + (1-scrolled) + ')';
+
+    box.style.WebkitTransform = transformValue;
+    box.style.MozTransform = transformValue;
+    box.style.OTransform = transformValue;
+    box.style.transform = transformValue;
+    
+  }, false);
+  
+}, false);
+
+{% endhighlight %}
+
+More technical details in [2011.beercamp.com/colophon](http://2011.beercamp.com/colophon) and [ZUI Site Riot](http://desandro.github.com/zui-site-riot/)
+
+## More complexity
+
++ Two different ways to transform sections
+  - 2D transforms - scaled within one another
+  - 3D transforms - back into 3D space, further from viewer
++ Scrolling brings subsequent sections into proper proportion
+
+## Transitions
+
++ Transitions are disabled by default
++ The small iterations of scrolling provide the illusion of animation
++ Enabling transitions will cause super-quick changes to stutter
++ But what if we jump to a new section?
++ On button navigation click, enable transitions
++ But then you have to disable them once transition completes
++ See demo [jsfiddle.net/desandro/daZmA/2/](http://jsfiddle.net/desandro/daZmA/2/)
+
+{% highlight javascript %}
+
+document.getElementById('nav').addEventListener( 'click', function(event) {
+  var level = parseInt( event.target.getAttribute('href').slice(1), 10 ),
+      // normalize scroll position
+      scrollY = ( level / 4 ) * ( docHeight - window.innerHeight );
+  // enable transitions
+  box.className = 'transitions-enabled';
+  // change scroll position
+  window.scrollTo( 0, scrollY );
+}, false);
+
+function transitionEnded(event) {
+  // disable transition
+  box.className = '';
+}
+
+box.addEventListener( 'webkitTransitionEnd', transitionEnded, false);
+box.addEventListener( 'transitionend', transitionEnded, false);
+box.addEventListener( 'oTransitionEnd', transitionEnded, false);
+
+{% endhighlight %}
+
+More details in [ZUI Site Riot - transitions](http://desandro.github.com/zui-site-riot/#transitions)
 
 ## Pitfalls and issues
 
-### Poor font rendering with hardware acceleration
+### Poor font rendering
+
+CSS transforms trigger poor anti-aliasing in Opera. See [dropshado.ws: Opera Transform Issues](http://dropshado.ws/post/1260101028/opera-transform-issues)
 
 Hardware acceleration in WebKit messes with font anti-aliasing. See [dropshado.ws: Resolving anti-aliasing on WebKit hardware-accelerated elements](http://dropshado.ws/post/6142339613/resolving-anti-aliasing-on-webkit-hardware-accelerated)
 
@@ -253,11 +351,54 @@ Adding a background:
 
 Safari and Firefox don't properly render Flash content inside elements with CSS transforms. See [dropshado.ws: CSS transforms breaking flash](http://dropshado.ws/post/4085720152/css-transforms-breaking-flash)
 
+### Ugly keyframes
+
++ Product navigation in [www.apple.com/mac](http://www.apple.com/mac/)
++ View source:  [images.apple.com/global/styles/productbrowser.css](http://images.apple.com/global/styles/productbrowser.css)
+
+{% highlight css %}
+
+@-webkit-keyframes open-1 {
+  from { opacity:0; -webkit-transform:translate3d( 210px, -145px, 0); }
+  25%  { opacity:1; -webkit-transform:translate3d( -15.6px, 4.1px, 0); }
+  30%  { opacity:1; -webkit-transform:translate3d( -10.3px, 2.7px, 0); }
+  35%  { opacity:1; -webkit-transform:translate3d( 0, 0, 0); }
+  40%  { opacity:1; -webkit-transform:translate3d( 4.5px, -1.2px, 0); }
+  45%  { opacity:1; -webkit-transform:translate3d( 2.9px, -0.8px, 0); }
+  50%  { opacity:1; -webkit-transform:translate3d( 0, 0, 0); }
+  55%  { opacity:1; -webkit-transform:translate3d( -1.3px, 0.3px, 0); }
+  60%  { opacity:1; -webkit-transform:translate3d( -0.8px, 0.2px, 0); }
+  65%  { opacity:1; -webkit-transform:translate3d( 0, 0, 0); }
+  70%  { opacity:1; -webkit-transform:translate3d( 0.4px, -0.1px, 0); }
+  75%  { opacity:1; -webkit-transform:translate3d( 0.2px, -0.1px, 0); }
+  80%  { opacity:1; -webkit-transform:translate3d( 0, 0, 0); }
+  85%  { opacity:1; -webkit-transform:translate3d( -0.1px, 0, 0); }
+  90%  { opacity:1; -webkit-transform:translate3d( -0.1px, 0, 0); }
+  to   { opacity:1; -webkit-transform:translate3d( 0, 0, 0); }
+}
+
+{% endhighlight %}
+
+> There are even better animations on the Mac subsection, all springy and bouncy and whatnot.
+> 
+> While it's pleasing to the eye and fun to use, implementing this is less fun:
+
+&mdash; Thomas Fuchs, [CSS animation transition-timing-functions and why they are not enough](http://mir.aculo.us/2011/01/26/css-animation-transition-timing-functions-and-why-they-are-not-enough/)
+
+
 ### Avoid Rube Goldberg contraptions
 
 + Sometimes using a simpler solution is well worth the time you can save.
 + See [mcgilldesandro.com](http://mcgilldesandro.com/) (my wedding site)
 + Radial type treatment could have easily been done in an image
 + Would have saved me hours
+
+## Motion/Emotion
+
+We're still learning how to use motion to say something
+
+> But that’s exactly what we're doing with CSS3 and JavaScript: we’re moving elements, not animating them. We’re constantly specifying beginning and end states and allowing the technology to interpolate between the two. And yet, it's the nuances within those middle frames that create the sense of life we’re looking for.
+
+&mdash; Dan Mall, [Real Animation Using JavaScript, CSS3, and HTML5 Video](http://24ways.org/2010/real-animation-using-javascript-css3-and-html5-video)
 
 
