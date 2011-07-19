@@ -27,7 +27,7 @@ layout: presentation
 + [Pretty darn popular](https://twitter.com/#!/desandro/status/76691983502028800)
 + Why do people enjoy it?
 
-## All about delight
+## Attaining delightenment
 
 + ![Design Nobility Pyramid](http://i.imgur.com/pMseY.jpg)
 + By [Frank Chimero](http://frankchimero.com)
@@ -83,7 +83,7 @@ Use JS to change class on `body` every 5 seconds: `color0`, `color1`, `color2`..
 
 var colorT = 0;
 
-changeColor = function() {
+function changeColor() {
   document.body.className = 'color' + colorT % 18;
   colorT++;
   setTimeout( changeColor, 5000 )
@@ -130,7 +130,8 @@ See this effect in action on [metafizzy.co](http://metafizzy.co)
 ## WebKit hardware acceleration
 
 + Using 3D transform function notation (`translate3d()`, `scale3d()`, or `rotate3d()`) triggers hardware acceleration
-+ Get awesome performance in Safari, Chrome 12+, iOS devices
++ Awesome performance in Safari, Chrome 12+
++ Especially useful for squeezing the best performance from iOS devices
 
 ## Thinking big - Isotope
 
@@ -175,22 +176,24 @@ See this effect in action on [metafizzy.co](http://metafizzy.co)
 
 + All lesser browsers
 + use top/left for positioning
-+ No scale transform, opacity will do
++ No scale transform, opacity alone will suffice
 
 {% highlight css %}
 
 .hide {
   left: 10px;
   top: 20px;
-  opacity: 1;
+  opacity: 0;
 }
 
 {% endhighlight %}
 
 ### Animation
 
-1. **CSS Transitions** - Firefox 4.0+, Safari, Chrome, Opera 11+
-2. **jQuery animation** (or whatever JS library you prefer) - Firefox 3.6-, IE9
+How will the changing styles be applied
+
+1. **CSS transitions** - Firefox 4.0+, Safari, Chrome, Opera 11+
+2. **jQuery animation** Firefox 3.6-, IE9
 3. **No animation** - IE6, IE7
 
 ### Demo
@@ -401,4 +404,7 @@ We're still learning how to use motion to say something
 
 &mdash; Dan Mall, [Real Animation Using JavaScript, CSS3, and HTML5 Video](http://24ways.org/2010/real-animation-using-javascript-css3-and-html5-video)
 
+## Thank you!
 
++ [@desandro](http://twitter.com/desandro)
++ [desandro.com/about#contact](http://desandro.com/about#contact)

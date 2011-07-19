@@ -62,6 +62,7 @@
       color: black;
       border-color: white;
     }
+    .preso-item.current a:hover { color: black; }
     
     body > * {
       padding: 0 20px;
@@ -103,7 +104,7 @@
               transform-origin: left top;
     }
     
-    .preso-item.hidden {
+    .preso-enabled .preso-item.hidden {
       opacity: 0;
       pointer-events: none;
       -webkit-transform: scale(2);
@@ -156,6 +157,10 @@
 
 </head>
 <body>
+
+  <div>
+    <button id="toggle-presentation">Toggle presentation</button>
+  </div>
 
   {{ content }}
 
@@ -221,7 +226,7 @@
       itemIndex = -1,
       previousItemIndex;
   
-  changeColor = function() {
+  function changeColor() {
     document.body.className = 'color' + colorT % 18;
     colorT++;
     setTimeout( changeColor, 5000 )
@@ -254,7 +259,6 @@
   }
   
   function handleKeyup( event ) {
-    // console.log( event.keyCode, presoItems.length );
     
     if ( event.keyCode === 37 ) {
       // left / previous
@@ -279,7 +283,14 @@
       presoItems[i].className = 'preso-item hidden';
     }
     
-    document.addEventListener( 'keyup', handleKeyup, false );
+    var isPresoEnabled = false;
+    
+    document.getElementById('toggle-presentation').addEventListener( 'click', function(){
+      isPresoEnabled = !isPresoEnabled;
+      var swap = isPresoEnabled ? 'add' : 'remove';
+      document.documentElement[ swap + 'ClassName' ]('preso-enabled');
+      document[ swap + 'EventListener' ]( 'keyup', handleKeyup, false );
+    }, false)
     
     if ( isTransitionsSupported ) {
       changeColor();
@@ -291,9 +302,6 @@
   
 })();
 
-
-  
-  
 </script>
 
 </body>
