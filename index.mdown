@@ -4,13 +4,7 @@ layout: presentation
 
 ---
 
-
-# {{ site.name }}
-
-<!-- * (Table of contents)
-{:toc} -->
-
-## David DeSandro
+## About me, David DeSandro
 
 + Web developer
 + Creative programming

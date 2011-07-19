@@ -118,6 +118,12 @@
       color: #FF6;
     }
     
+    .follow {
+      font-size: 1.6em;
+      font-weight: 300;
+      line-height: 1.5em;
+    }
+    
     /**** Pygments ****/
  
     pre, code {
@@ -159,7 +165,9 @@
 <body>
 
   <div>
-    <button id="toggle-presentation">Toggle presentation</button>
+    <h1>{{ site.name }}</h1>
+    <div class="follow">Follow along at <a href="http://bit.ly/motion-preso">bit.ly/motion-preso</a></div>
+    <p><button id="toggle-presentation">Toggle presentation</button></p>
   </div>
 
   {{ content }}
